@@ -72,6 +72,7 @@ OR
 - you can use CLI application provided for you, so you can manage it very easily even without Docker or Docker Swarm commands
 
 To use CLI, copy `cli.py` and `docker-compose-shared.yml` files from `infrastructure-demo` directory anywhere to one of VMs in same directory. You don't need source codes of services, because they are already made to images and pushed into Docker Hub, so no need to worry. Then, you can run CLI app simply by running `python3 cli.py` and then you will see welcome message with provided info on how to use this app (so we won't be discussing it here, as it is already there).
+
 To simulate node death, you don't need to shutdown VM. Of course you can, but you also can just run command `docker node update --availability drain <NODE-ID>` from any of your VMs. To make it participate in swarm again, run `docker node update --availability active <NODE-ID>`
 
 ## Using client-side of application
