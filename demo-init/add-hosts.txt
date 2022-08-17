@@ -1,0 +1,5 @@
+Add these lines to /etc/hosts on all VMs using `sudo nano /etc/hosts` and customize them accordingly to your VM IPs and hostnames. To check for your VM hostname run `hostname` and to chech for your IP address run `ifconfig`. If `ifconfig` won't run, then install needed dependencies and re-run it.
+
+192.168.6.135 ubuntu1-vm
+192.168.1.136 ubuntu2-vm
+192.168.1.137 ubuntu3-vm

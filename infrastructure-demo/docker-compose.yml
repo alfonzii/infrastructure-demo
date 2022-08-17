@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  web:
+    image: alfonzi/web-app:latest
+    build: ./web
+    ports:
+      - "5000:5000"
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  db:
+    image: alfonzi/db-app:latest
+    build: ./db
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      - redis
+    volumes:
+      - shelve-volume:/data
+
+  logger:
+    image: alfonzi/logger-app:latest
+    build: ./logger
+    deploy:
+      mode: replicated
+      replicas: 1
+    volumes:
+      - logs-volume:/logs
+volumes:
+  shelve-volume:
+  logs-volume:

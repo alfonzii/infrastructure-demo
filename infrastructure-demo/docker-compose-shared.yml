@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  web:
+    image: alfonzi/web-app:latest
+    build: ./web
+    ports:
+      - "5000:5000"
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  db:
+    image: alfonzi/db-app:latest
+    build: ./db
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      - redis
+    volumes:
+      - type: bind
+        source: /mnt/ifr-demo_vol/shelve
+        target: /data
+
+  logger:
+    image: alfonzi/logger-app:latest
+    build: ./logger
+    deploy:
+      mode: replicated
+      replicas: 1
+    volumes:
+      - type: bind
+        source: /mnt/ifr-demo_vol/logs
+        target: /logs
+        
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    stop_grace_period: 1m30s
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager] 
+
