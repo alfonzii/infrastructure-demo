@@ -18,6 +18,19 @@ Ever wondered how **high availability (HA)** looks like in practice? Wanted to g
   - Programming language - Python
   - Webserver - Python Flask  
 
+## Quick explanation
+1. web
+  - client connects to web page - here you can provide some name (entity) and quantity and hit submit
+  - send data through socket to database service
+2. database
+  - database service fetches data which then saves into GlusterFS volume (distributed replicated) and makes it persistent
+  - sends data through socket to logger service
+3. logger
+  - fetches data from database service and logs into GlusterFS volume depending on how database treated data (incremented some entity by given quantity or created new one)
+4. visualizator
+  - independent from other services
+  - serves just as graphical visualizator of infrastructure
+
 ## Setup
 To be able to use application, we first need to setup environment for it. In this section we will provide instructions on how to correctly setup cluster of 3 VMs to properly run our infrastructure demo in it. You **MUST FOLLOW** these instructions **EXACTLY** as they are. It's tested and it will provide you with needed environment. Should you run commands or follow instructions in different order as they are written here, there is no warranty it will create needed environment for you! 
 
@@ -49,3 +62,27 @@ This setup was created mostly by compilation of these three websites ([1](https:
 At this very moment, you should have whole environment ready for you to run **_infrastructure-demo_** program. To check, if you are properly connected to gluster and got the volume mounted, run `df -h` and see for yourself (you should be able to see one volume with gluster keyword in it).
 
 Last but not least, it you quit 2 or 3 VMs (generally speaking more than 50% of machines), then, at reboot, it's needed for you to mount again gluster volume (when there are already more then 50% of machines up) with command `sudo mount.glusterfs localhost:/gluster_vol0 /mnt/ifr-demo_vol`
+
+## Using CLI
+Once we are set up, we can deploy **_infrastrucutre-demo_** program and start experimenting. There are two ways how you can manage it:
+- you can use Docker Swarm and Docker itself for managing and orchestrating the infrastructure
+
+OR
+
+- you can use CLI application provided for you, so you can manage it very easily even without Docker or Docker Swarm commands
+
+To use CLI, copy `cli.py` and `docker-compose-shared.yml` files from `infrastructure-demo` directory anywhere to one of VMs in same directory. Then, you can run CLI app simply by running `python3 cli.py` and then you will see welcome message with provided info on how to use this app (so we won't be discussing it here, as it is already there).
+
+## Using client-side of application
+After deployment, **_infrastructure-demo_** program exposes 2 ports to which we can connect:
+- 5000 - front-end of application - webpage through which we can interact and add/increment entities in database
+- 8080 - visualizator - webpage on which we can graphically see how containers and nodes behave and how are they loadbalanced in between
+
+To use application, you simply connect to `localhost:5000` from one VM and webpage pops up. Here you can add some data, submit it and program saves it into database, as well as makes log about it.
+To use visualizator, connect to `localhost:8080` and you will be presented with such website.
+
+Just to remind you, when you are somehow rescaling application, doing node deaths etc., be advised to clear cache in your browser by cleaning your history. Caching can make you not connect to newly rebalanced infrastructure.
+
+
+
+For more in-depth specification, see `specification.pdf` file.
