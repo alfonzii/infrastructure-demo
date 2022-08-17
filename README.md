@@ -71,7 +71,7 @@ OR
 
 - you can use CLI application provided for you, so you can manage it very easily even without Docker or Docker Swarm commands
 
-To use CLI, copy `cli.py` and `docker-compose-shared.yml` files from `infrastructure-demo` directory anywhere to one of VMs in same directory. Then, you can run CLI app simply by running `python3 cli.py` and then you will see welcome message with provided info on how to use this app (so we won't be discussing it here, as it is already there).
+To use CLI, copy `cli.py` and `docker-compose-shared.yml` files from `infrastructure-demo` directory anywhere to one of VMs in same directory. You don't need source codes of services, because they are already made to images and pushed into Docker Hub, so no need to worry. Then, you can run CLI app simply by running `python3 cli.py` and then you will see welcome message with provided info on how to use this app (so we won't be discussing it here, as it is already there).
 
 ## Using client-side of application
 After deployment, **_infrastructure-demo_** program exposes 2 ports to which we can connect:
